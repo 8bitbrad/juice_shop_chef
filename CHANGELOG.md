@@ -1,6 +1,6 @@
-# juice-box CHANGELOG
+# juice_shop CHANGELOG
 
-This file is used to list changes made in each version of the juice-box cookbook.
+This file is used to list changes made in each version of the juice_shop cookbook.
 
 # 0.1.0
 

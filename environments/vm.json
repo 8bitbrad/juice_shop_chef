@@ -1,0 +1,9 @@
+{
+  "name": "vm",
+  "default_attributes": {
+    "build_type": "vm"
+  },
+  "json_class": "Chef::Environment",
+  "description": "used when building the vm version of the cookbook",
+  "chef_type": "environment"
+}

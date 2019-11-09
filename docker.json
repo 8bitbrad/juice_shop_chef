@@ -1,0 +1,52 @@
+{
+  "variables": {},
+  "builders": [
+    {
+      "type": "docker",
+      "image": "phusion/baseimage:master-amd64",
+      "run_command": ["-d", "--cap-add=SYS_PTRACE", "-i", "-t", "{{.Image}}", "/bin/bash"],
+      "commit": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["printf '#!/bin/sh\nexit 0\n' > /usr/sbin/policy-rc.d"]
+    },
+    {
+      "type": "shell",
+      "inline": ["apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install curl sudo gpg"]
+    },
+    {
+      "type": "chef-solo",
+      "chef_license": "accept",
+      "install_command": "curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -v 15.4.45",
+      "cookbook_paths": ["berks-cookbooks"],
+      "run_list": [ "recipe[juice_shop::juice_shop_app]" ]
+    },
+    {
+      "type": "shell",
+      "inline": ["sudo dpkg -P chef"]
+    },
+    {
+      "type": "shell",
+      "inline":  ["rm -rf /tmp/packer-chef-solo"]
+    },
+    {
+      "type": "shell",
+      "inline": ["mkdir /etc/service/juice_shop && printf '#!/bin/bash\ncd /home/apprunner/juice_shop && exec /sbin/setuser apprunner /usr/bin/npm start\n' > /etc/service/juice_shop/run && chmod +x /etc/service/juice_shop/run"]
+    },
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.docker",
+      "strip_path": true
+    },
+    {
+      "type": "docker-tag",
+      "repository": "8bitbrad/juice_shop",
+      "tag": "0.1"
+    }
+  ]
+}

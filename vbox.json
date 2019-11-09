@@ -1,0 +1,77 @@
+{
+  "variables": {},
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "Ubuntu_64",
+      "iso_url": "http://www.cdimage.ubuntu.com/ubuntu/releases/18.04/release/ubuntu-18.04.3-server-amd64.iso",
+      "iso_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
+      "iso_checksum_type": "sha256",
+      "vm_name": "ubuntu_18.04_juice_shop",
+      "disk_size": 10000,
+      "headless": "true",
+      "http_directory": "preseed",
+      "boot_command": [
+        "<esc><wait>",
+	"<esc><wait>",
+	"<enter><wait>",
+	"/install/vmlinuz<wait>",
+	" auto<wait>",
+	" console-setup/ask_detect=false<wait>",
+	" console-setup/layoutcode-us<wait>",
+	" console-setup/modelcode=pc105<wait>",
+	" debconf/frontend=noninteractive<wait>",
+	" debian-installer=en_US<wait>",
+        " fb=false<wait>",
+	" initrd=/install/initrd.gz<wait>",
+	" kbd-chooser/method=us<wait>",
+	" keyboard-configuration/layout=USA<wait>",
+	" keyboard-configuration/variant=USA<wait>",
+	" locale=en_US<wait>",
+	" netcfg/get_domain=vm<wait>",
+	" netcfg/get_hostname=juice-shop<wait>",
+	" grub-installer/bootdev=/dev/sda<wait>",
+	" noapic<wait>",
+	" preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
+	" -- <wait>",
+	"<enter><wait>"
+      ],
+      "ssh_username": "juicer",
+      "ssh_password": "p@ssw0rd",
+      "ssh_wait_timeout": "10000s",
+      "ssh_pty": "true",
+      "shutdown_command": "sudo poweroff",
+      "vboxmanage": [
+        ["modifyvm", "ubuntu_18.04_juice_shop", "--memory", "4096"]
+      ],
+      "format": "ova",
+      "post_shutdown_delay": "180s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "chef-solo",
+      "environments_path": "environments",
+      "chef_environment": "vm",
+      "chef_license": "accept",
+      "install_command": "curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -v 15.4.45",
+      "cookbook_paths": ["berks-cookbooks"],
+      "run_list": [ "recipe[juice_shop::juice_shop_app]" ]
+    },
+    {
+      "type": "shell",
+      "inline": ["sudo dpkg -P chef"]
+    },
+    {
+      "type": "shell",
+      "inline":  ["sudo rm -rf /tmp/packer-chef-solo"]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.vbox",
+      "strip_path": true
+    }
+  ]
+}

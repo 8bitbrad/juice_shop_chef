@@ -1,9 +1,9 @@
-name 'juice-box'
+name 'juice_shop'
 maintainer 'The Authors'
 maintainer_email 'you@example.com'
 license 'All Rights Reserved'
-description 'Installs/Configures juice-box'
-long_description 'Installs/Configures juice-box'
+description 'Installs/Configures juice-shop'
+long_description 'Installs/Configures juice-shop'
 version '0.1.0'
 chef_version '>= 14.0'
 
@@ -11,10 +11,10 @@ chef_version '>= 14.0'
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
 # uploaded to a Supermarket.
 #
-# issues_url 'https://github.com/<insert_org_here>/juice-box/issues'
+# issues_url 'https://github.com/<insert_org_here>/juice-shop/issues'
 
 # The `source_url` points to the development repository for this cookbook.  A
 # `View Source` link will be displayed on this cookbook's page when uploaded to
 # a Supermarket.
 #
-# source_url 'https://github.com/<insert_org_here>/juice-box'
+# source_url 'https://github.com/<insert_org_here>/juice-shop'

@@ -1,4 +1,4 @@
-# InSpec test for recipe juice-box::default
+# InSpec test for recipe juice_shop::install_juice_shop
 
 # The InSpec reference, with examples and extensive documentation, can be
 # found at https://www.inspec.io/docs/reference/resources/
