@@ -35,7 +35,7 @@
     {
       "type": "shell",
       "inline": ["mkdir /etc/service/juice_shop && printf '#!/bin/bash\ncd /home/apprunner/juice_shop && exec /sbin/setuser apprunner /usr/bin/npm start\n' > /etc/service/juice_shop/run && chmod +x /etc/service/juice_shop/run"]
-    },
+    }
   ],
   "post-processors": [
     {
